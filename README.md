@@ -20,21 +20,29 @@ Please check the `docs/` folder for comprehensive project documentation:
 
 ## Quickstart
 
-1. Ensure `uv` is installed on your system.
-2. Clone this repository and navigate to the root directory.
-3. Add your Gemini API key to the `.env` file:
+1. Ensure [`uv`](https://docs.astral.sh/uv/) is installed on your system.
+2. Clone this repository and navigate to the root directory:
+   ```bash
+   git clone <repository_url>
+   cd EnterpriseDocuBot
    ```
+3. Install project dependencies and set up the virtual environment:
+   ```bash
+   uv sync
+   ```
+4. Create a `.env` file in the root directory and add your Gemini API key:
+   ```env
    GEMINI_API_KEY=your_actual_key_here
    ```
-4. Seed the vector database with mock legal data:
+5. Seed the vector database with mock legal data:
    ```bash
    PYTHONPATH=. uv run python mock_data/seed.py
    ```
-5. Start the FastAPI server:
+6. Start the FastAPI server:
    ```bash
    PYTHONPATH=. uv run python src/main.py
    ```
-6. Open your browser and navigate to `http://localhost:8000/docs` to test the API!
+7. Open your browser and navigate to `http://localhost:8000/docs` to test the API!
 
 ## Tech Stack
 - **Python Package Manager:** `uv`
