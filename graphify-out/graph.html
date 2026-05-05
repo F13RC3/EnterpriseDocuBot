@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>graphify - graphify-out/graph.html</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f0f1a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; display: flex; height: 100vh; overflow: hidden; }
+  #graph { flex: 1; }
+  #sidebar { width: 280px; background: #1a1a2e; border-left: 1px solid #2a2a4e; display: flex; flex-direction: column; overflow: hidden; }
+  #search-wrap { padding: 12px; border-bottom: 1px solid #2a2a4e; }
+  #search { width: 100%; background: #0f0f1a; border: 1px solid #3a3a5e; color: #e0e0e0; padding: 7px 10px; border-radius: 6px; font-size: 13px; outline: none; }
+  #search:focus { border-color: #4E79A7; }
+  #search-results { max-height: 140px; overflow-y: auto; padding: 4px 12px; border-bottom: 1px solid #2a2a4e; display: none; }
+  .search-item { padding: 4px 6px; cursor: pointer; border-radius: 4px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .search-item:hover { background: #2a2a4e; }
+  #info-panel { padding: 14px; border-bottom: 1px solid #2a2a4e; min-height: 140px; }
+  #info-panel h3 { font-size: 13px; color: #aaa; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  #info-content { font-size: 13px; color: #ccc; line-height: 1.6; }
+  #info-content .field { margin-bottom: 5px; }
+  #info-content .field b { color: #e0e0e0; }
+  #info-content .empty { color: #555; font-style: italic; }
+  .neighbor-link { display: block; padding: 2px 6px; margin: 2px 0; border-radius: 3px; cursor: pointer; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 3px solid #333; }
+  .neighbor-link:hover { background: #2a2a4e; }
+  #neighbors-list { max-height: 160px; overflow-y: auto; margin-top: 4px; }
+  #legend-wrap { flex: 1; overflow-y: auto; padding: 12px; }
+  #legend-wrap h3 { font-size: 13px; color: #aaa; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .legend-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; cursor: pointer; border-radius: 4px; font-size: 12px; }
+  .legend-item:hover { background: #2a2a4e; padding-left: 4px; }
+  .legend-item.dimmed { opacity: 0.35; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .legend-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .legend-count { color: #666; font-size: 11px; }
+  #stats { padding: 10px 14px; border-top: 1px solid #2a2a4e; font-size: 11px; color: #555; }
+  #legend-controls { display: flex; gap: 6px; margin-bottom: 8px; }
+  #legend-controls button { flex: 1; background: #0f0f1a; border: 1px solid #3a3a5e; color: #aaa; padding: 4px 0; border-radius: 4px; font-size: 11px; cursor: pointer; }
+  #legend-controls button:hover { border-color: #4E79A7; color: #e0e0e0; }
+</style>
+</head>
+<body>
+<div id="graph"></div>
+<div id="sidebar">
+  <div id="search-wrap">
+    <input id="search" type="text" placeholder="Search nodes..." autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+  <div id="info-panel">
+    <h3>Node Info</h3>
+    <div id="info-content"><span class="empty">Click a node to inspect it</span></div>
+  </div>
+  <div id="legend-wrap">
+    <h3>Communities</h3>
+    <div id="legend-controls">
+      <button onclick="toggleAllCommunities(false)">Show All</button>
+      <button onclick="toggleAllCommunities(true)">Hide All</button>
+    </div>
+    <div id="legend"></div>
+  </div>
+  <div id="stats">59 nodes &middot; 66 edges &middot; 18 communities</div>
+</div>
+<script>
+const RAW_NODES = [{"id": "main_py", "label": "main.py", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "main.py", "community": 5, "community_name": "Main Entry Point", "source_file": "main.py", "file_type": "code", "degree": 1}, {"id": "enterprisedocubot_main_main", "label": "main()", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 15.5, "font": {"size": 12, "color": "#ffffff"}, "title": "main()", "community": 5, "community_name": "Main Entry Point", "source_file": "main.py", "file_type": "code", "degree": 2}, {"id": "list_models_py", "label": "list_models.py", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "list_models.py", "community": 15, "community_name": "List Models Script", "source_file": "list_models.py", "file_type": "code", "degree": 0}, {"id": "src_config_py", "label": "config.py", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 15.5, "font": {"size": 12, "color": "#ffffff"}, "title": "config.py", "community": 3, "community_name": "Configuration", "source_file": "src/config.py", "file_type": "code", "degree": 2}, {"id": "src_config_settings", "label": "Settings", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "Settings", "community": 3, "community_name": "Configuration", "source_file": "src/config.py", "file_type": "code", "degree": 3}, {"id": "basesettings", "label": "BaseSettings", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "BaseSettings", "community": 3, "community_name": "Configuration", "source_file": "", "file_type": "code", "degree": 1}, {"id": "src_config_config", "label": "Config", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 15.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Config", "community": 3, "community_name": "Configuration", "source_file": "src/config.py", "file_type": "code", "degree": 2}, {"id": "src_main_py", "label": "main.py", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "main.py", "community": 1, "community_name": "Query Processing", "source_file": "src/main.py", "file_type": "code", "degree": 3}, {"id": "src_main_queryrequest", "label": "QueryRequest", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "QueryRequest", "community": 1, "community_name": "Query Processing", "source_file": "src/main.py", "file_type": "code", "degree": 3}, {"id": "basemodel", "label": "BaseModel", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 15.5, "font": {"size": 12, "color": "#ffffff"}, "title": "BaseModel", "community": 1, "community_name": "Query Processing", "source_file": "", "file_type": "code", "degree": 2}, {"id": "src_main_queryresponse", "label": "QueryResponse", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 20.9, "font": {"size": 12, "color": "#ffffff"}, "title": "QueryResponse", "community": 1, "community_name": "Query Processing", "source_file": "src/main.py", "file_type": "code", "degree": 4}, {"id": "src_main_process_query", "label": "process_query()", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "process_query()", "community": 1, "community_name": "Query Processing", "source_file": "src/main.py", "file_type": "code", "degree": 3}, {"id": "src_agent_state_py", "label": "state.py", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "state.py", "community": 4, "community_name": "Agent State", "source_file": "src/agent/state.py", "file_type": "code", "degree": 1}, {"id": "agent_state_agentstate", "label": "AgentState", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 31.8, "font": {"size": 12, "color": "#ffffff"}, "title": "AgentState", "community": 4, "community_name": "Agent State", "source_file": "src/agent/state.py", "file_type": "code", "degree": 8}, {"id": "typeddict", "label": "TypedDict", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "TypedDict", "community": 4, "community_name": "Agent State", "source_file": "", "file_type": "code", "degree": 1}, {"id": "src_agent_nodes_py", "label": "nodes.py", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 23.6, "font": {"size": 12, "color": "#ffffff"}, "title": "nodes.py", "community": 7, "community_name": "Validate Node", "source_file": "src/agent/nodes.py", "file_type": "code", "degree": 5}, {"id": "agent_nodes_route_query", "label": "route_query()", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "route_query()", "community": 11, "community_name": "Route Query Node", "source_file": "src/agent/nodes.py", "file_type": "code", "degree": 3}, {"id": "agent_nodes_retrieve", "label": "retrieve()", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "retrieve()", "community": 12, "community_name": "Retrieve Node", "source_file": "src/agent/nodes.py", "file_type": "code", "degree": 3}, {"id": "agent_nodes_analyze", "label": "analyze()", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "analyze()", "community": 6, "community_name": "Analyze Node", "source_file": "src/agent/nodes.py", "file_type": "code", "degree": 3}, {"id": "agent_nodes_draft", "label": "draft()", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "draft()", "community": 10, "community_name": "Draft Node", "source_file": "src/agent/nodes.py", "file_type": "code", "degree": 3}, {"id": "agent_nodes_validate", "label": "validate()", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "validate()", "community": 7, "community_name": "Validate Node", "source_file": "src/agent/nodes.py", "file_type": "code", "degree": 3}, {"id": "agent_nodes_rationale_15", "label": "Decides whether the query is for drafting a new contract or analyzing an existin", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "Decides whether the query is for drafting a new contract or analyzing an existin", "community": 11, "community_name": "Route Query Node", "source_file": "src/agent/nodes.py", "file_type": "rationale", "degree": 3}, {"id": "agent_nodes_rationale_34", "label": "Fetches relevant context from the vector store.", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "Fetches relevant context from the vector store.", "community": 12, "community_name": "Retrieve Node", "source_file": "src/agent/nodes.py", "file_type": "rationale", "degree": 3}, {"id": "agent_nodes_rationale_40", "label": "Analyzes the retrieved context based on the query.", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "Analyzes the retrieved context based on the query.", "community": 6, "community_name": "Analyze Node", "source_file": "src/agent/nodes.py", "file_type": "rationale", "degree": 3}, {"id": "agent_nodes_rationale_56", "label": "Generates new contract content.", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "Generates new contract content.", "community": 10, "community_name": "Draft Node", "source_file": "src/agent/nodes.py", "file_type": "rationale", "degree": 3}, {"id": "agent_nodes_rationale_71", "label": "Validates the drafted or analyzed content against standard legal compliance.", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "Validates the drafted or analyzed content against standard legal compliance.", "community": 7, "community_name": "Validate Node", "source_file": "src/agent/nodes.py", "file_type": "rationale", "degree": 3}, {"id": "src_agent_graph_py", "label": "graph.py", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "graph.py", "community": 8, "community_name": "Graph Builder", "source_file": "src/agent/graph.py", "file_type": "code", "degree": 1}, {"id": "agent_graph_build_graph", "label": "build_graph()", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 15.5, "font": {"size": 12, "color": "#ffffff"}, "title": "build_graph()", "community": 8, "community_name": "Graph Builder", "source_file": "src/agent/graph.py", "file_type": "code", "degree": 2}, {"id": "src_rag_vectorstore_py", "label": "vectorstore.py", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "vectorstore.py", "community": 0, "community_name": "RAG Store & Seeding", "source_file": "src/rag/vectorstore.py", "file_type": "code", "degree": 1}, {"id": "rag_vectorstore_ragstore", "label": "RAGStore", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 40.0, "font": {"size": 12, "color": "#ffffff"}, "title": "RAGStore", "community": 0, "community_name": "RAG Store & Seeding", "source_file": "src/rag/vectorstore.py", "file_type": "code", "degree": 11}, {"id": "rag_vectorstore_ragstore_init", "label": ".__init__()", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": ".__init__()", "community": 0, "community_name": "RAG Store & Seeding", "source_file": "src/rag/vectorstore.py", "file_type": "code", "degree": 1}, {"id": "rag_vectorstore_ragstore_add_documents", "label": ".add_documents()", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": ".add_documents()", "community": 0, "community_name": "RAG Store & Seeding", "source_file": "src/rag/vectorstore.py", "file_type": "code", "degree": 3}, {"id": "rag_vectorstore_ragstore_retrieve", "label": ".retrieve()", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": ".retrieve()", "community": 0, "community_name": "RAG Store & Seeding", "source_file": "src/rag/vectorstore.py", "file_type": "code", "degree": 1}, {"id": "rag_vectorstore_rationale_19", "label": "documents: list of dicts with 'id', 'text', 'metadata'", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "documents: list of dicts with &#x27;id&#x27;, &#x27;text&#x27;, &#x27;metadata&#x27;", "community": 0, "community_name": "RAG Store & Seeding", "source_file": "src/rag/vectorstore.py", "file_type": "rationale", "degree": 1}, {"id": "mock_data_seed_py", "label": "seed.py", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "seed.py", "community": 0, "community_name": "RAG Store & Seeding", "source_file": "mock_data/seed.py", "file_type": "code", "degree": 1}, {"id": "mock_data_seed_seed_database", "label": "seed_database()", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 20.9, "font": {"size": 12, "color": "#ffffff"}, "title": "seed_database()", "community": 0, "community_name": "RAG Store & Seeding", "source_file": "mock_data/seed.py", "file_type": "code", "degree": 4}, {"id": "home_kei0s_documents_enterprisedocubot_main_py", "label": "main.py", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "main.py", "community": 5, "community_name": "Main Entry Point", "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/main.py", "file_type": "code", "degree": 1}, {"id": "home_kei0s_documents_enterprisedocubot_list_models_py", "label": "list_models.py", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "list_models.py", "community": 16, "community_name": "List Models Module", "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/list_models.py", "file_type": "code", "degree": 0}, {"id": "home_kei0s_documents_enterprisedocubot_src_config_py", "label": "config.py", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 15.5, "font": {"size": 12, "color": "#ffffff"}, "title": "config.py", "community": 3, "community_name": "Configuration", "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/config.py", "file_type": "code", "degree": 2}, {"id": "home_kei0s_documents_enterprisedocubot_src_main_py", "label": "main.py", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "main.py", "community": 1, "community_name": "Query Processing", "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/main.py", "file_type": "code", "degree": 3}, {"id": "home_kei0s_documents_enterprisedocubot_src_agent_state_py", "label": "state.py", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "state.py", "community": 4, "community_name": "Agent State", "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/state.py", "file_type": "code", "degree": 1}, {"id": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py", "label": "nodes.py", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 23.6, "font": {"size": 12, "color": "#ffffff"}, "title": "nodes.py", "community": 6, "community_name": "Analyze Node", "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py", "file_type": "code", "degree": 5}, {"id": "home_kei0s_documents_enterprisedocubot_src_agent_graph_py", "label": "graph.py", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "graph.py", "community": 8, "community_name": "Graph Builder", "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/graph.py", "file_type": "code", "degree": 1}, {"id": "home_kei0s_documents_enterprisedocubot_src_rag_vectorstore_py", "label": "vectorstore.py", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "vectorstore.py", "community": 0, "community_name": "RAG Store & Seeding", "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/rag/vectorstore.py", "file_type": "code", "degree": 1}, {"id": "home_kei0s_documents_enterprisedocubot_mock_data_seed_py", "label": "seed.py", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "seed.py", "community": 0, "community_name": "RAG Store & Seeding", "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/mock_data/seed.py", "file_type": "code", "degree": 1}, {"id": "srs_queryrouting", "label": "Query Routing", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "Query Routing", "community": 2, "community_name": "Query Routing & Retrieval", "source_file": "docs/srs.md", "file_type": "document", "degree": 3}, {"id": "srs_contracdrafting", "label": "Contract Drafting", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Contract Drafting", "community": 2, "community_name": "Query Routing & Retrieval", "source_file": "docs/srs.md", "file_type": "document", "degree": 2}, {"id": "srs_contractanalysis", "label": "Contract Analysis", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Contract Analysis", "community": 2, "community_name": "Query Routing & Retrieval", "source_file": "docs/srs.md", "file_type": "document", "degree": 2}, {"id": "srs_validation", "label": "Validation Node", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 15.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Validation Node", "community": 9, "community_name": "Draft & Risk Analysis", "source_file": "docs/srs.md", "file_type": "document", "degree": 2}, {"id": "srs_apiendpoint", "label": "POST /process Endpoint", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "POST /process Endpoint", "community": 2, "community_name": "Query Routing & Retrieval", "source_file": "docs/srs.md", "file_type": "document", "degree": 1}, {"id": "srs_chromadb", "label": "ChromaDB Collection", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 18.2, "font": {"size": 12, "color": "#ffffff"}, "title": "ChromaDB Collection", "community": 2, "community_name": "Query Routing & Retrieval", "source_file": "docs/srs.md", "file_type": "document", "degree": 3}, {"id": "srs_naturallanguage", "label": "Natural Language Query", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "Natural Language Query", "community": 2, "community_name": "Query Routing & Retrieval", "source_file": "docs/srs.md", "file_type": "document", "degree": 1}, {"id": "srs_legaldraft", "label": "Legal Draft", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "Legal Draft", "community": 9, "community_name": "Draft & Risk Analysis", "source_file": "docs/srs.md", "file_type": "document", "degree": 1}, {"id": "srs_riskanalysis", "label": "Risk Analysis", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "Risk Analysis", "community": 9, "community_name": "Draft & Risk Analysis", "source_file": "docs/srs.md", "file_type": "document", "degree": 1}, {"id": "srs_legalsoundness", "label": "Legal Soundness Check", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "Legal Soundness Check", "community": 17, "community_name": "Legal Validation", "source_file": "docs/srs.md", "file_type": "document", "degree": 0}, {"id": "srs_performance", "label": "Performance (15s response)", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "Performance (15s response)", "community": 13, "community_name": "API Performance", "source_file": "docs/srs.md", "file_type": "document", "degree": 1}, {"id": "srs_scalability", "label": "Horizontal Scalability", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "Horizontal Scalability", "community": 14, "community_name": "LangGraph Scalability", "source_file": "docs/srs.md", "file_type": "document", "degree": 1}, {"id": "srs_fastapi", "label": "FastAPI", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "FastAPI", "community": 13, "community_name": "API Performance", "source_file": "docs/srs.md", "file_type": "document", "degree": 1}, {"id": "srs_langgraph", "label": "LangGraph", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 12.7, "font": {"size": 0, "color": "#ffffff"}, "title": "LangGraph", "community": 14, "community_name": "LangGraph Scalability", "source_file": "docs/srs.md", "file_type": "document", "degree": 1}];
+const RAW_EDGES = [{"from": "main_py", "to": "enterprisedocubot_main_main", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "enterprisedocubot_main_main", "to": "home_kei0s_documents_enterprisedocubot_main_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_config_py", "to": "src_config_settings", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_config_py", "to": "src_config_config", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_config_settings", "to": "basesettings", "label": "inherits", "title": "inherits [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_config_settings", "to": "home_kei0s_documents_enterprisedocubot_src_config_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_config_config", "to": "home_kei0s_documents_enterprisedocubot_src_config_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_main_py", "to": "src_main_queryrequest", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_main_py", "to": "src_main_queryresponse", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_main_py", "to": "src_main_process_query", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_main_queryrequest", "to": "basemodel", "label": "inherits", "title": "inherits [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_main_queryrequest", "to": "home_kei0s_documents_enterprisedocubot_src_main_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "basemodel", "to": "src_main_queryresponse", "label": "inherits", "title": "inherits [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_main_queryresponse", "to": "src_main_process_query", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_main_queryresponse", "to": "home_kei0s_documents_enterprisedocubot_src_main_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_main_process_query", "to": "home_kei0s_documents_enterprisedocubot_src_main_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_agent_state_py", "to": "agent_state_agentstate", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_state_agentstate", "to": "typeddict", "label": "inherits", "title": "inherits [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_state_agentstate", "to": "agent_nodes_rationale_15", "label": "uses", "title": "uses [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "agent_state_agentstate", "to": "agent_nodes_rationale_34", "label": "uses", "title": "uses [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "agent_state_agentstate", "to": "agent_nodes_rationale_40", "label": "uses", "title": "uses [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "agent_state_agentstate", "to": "agent_nodes_rationale_56", "label": "uses", "title": "uses [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "agent_state_agentstate", "to": "agent_nodes_rationale_71", "label": "uses", "title": "uses [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "agent_state_agentstate", "to": "home_kei0s_documents_enterprisedocubot_src_agent_state_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_agent_nodes_py", "to": "agent_nodes_route_query", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_agent_nodes_py", "to": "agent_nodes_retrieve", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_agent_nodes_py", "to": "agent_nodes_analyze", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_agent_nodes_py", "to": "agent_nodes_draft", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_agent_nodes_py", "to": "agent_nodes_validate", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_nodes_route_query", "to": "agent_nodes_rationale_15", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_nodes_route_query", "to": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_nodes_retrieve", "to": "agent_nodes_rationale_34", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_nodes_retrieve", "to": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_nodes_analyze", "to": "agent_nodes_rationale_40", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_nodes_analyze", "to": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_nodes_draft", "to": "agent_nodes_rationale_56", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_nodes_draft", "to": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_nodes_validate", "to": "agent_nodes_rationale_71", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_nodes_validate", "to": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_nodes_rationale_15", "to": "rag_vectorstore_ragstore", "label": "uses", "title": "uses [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "agent_nodes_rationale_34", "to": "rag_vectorstore_ragstore", "label": "uses", "title": "uses [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "agent_nodes_rationale_40", "to": "rag_vectorstore_ragstore", "label": "uses", "title": "uses [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "agent_nodes_rationale_56", "to": "rag_vectorstore_ragstore", "label": "uses", "title": "uses [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "agent_nodes_rationale_71", "to": "rag_vectorstore_ragstore", "label": "uses", "title": "uses [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "src_agent_graph_py", "to": "agent_graph_build_graph", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agent_graph_build_graph", "to": "home_kei0s_documents_enterprisedocubot_src_agent_graph_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "src_rag_vectorstore_py", "to": "rag_vectorstore_ragstore", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "rag_vectorstore_ragstore", "to": "rag_vectorstore_ragstore_init", "label": "method", "title": "method [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "rag_vectorstore_ragstore", "to": "rag_vectorstore_ragstore_add_documents", "label": "method", "title": "method [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "rag_vectorstore_ragstore", "to": "rag_vectorstore_ragstore_retrieve", "label": "method", "title": "method [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "rag_vectorstore_ragstore", "to": "mock_data_seed_seed_database", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "rag_vectorstore_ragstore", "to": "home_kei0s_documents_enterprisedocubot_src_rag_vectorstore_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "rag_vectorstore_ragstore_add_documents", "to": "rag_vectorstore_rationale_19", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "rag_vectorstore_ragstore_add_documents", "to": "mock_data_seed_seed_database", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "mock_data_seed_py", "to": "mock_data_seed_seed_database", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "mock_data_seed_seed_database", "to": "home_kei0s_documents_enterprisedocubot_mock_data_seed_py", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "srs_queryrouting", "to": "srs_contracdrafting", "label": "triggers", "title": "triggers [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "srs_queryrouting", "to": "srs_contractanalysis", "label": "triggers", "title": "triggers [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "srs_queryrouting", "to": "srs_apiendpoint", "label": "accepts", "title": "accepts [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "srs_contracdrafting", "to": "srs_chromadb", "label": "provides_context", "title": "provides_context [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "srs_contractanalysis", "to": "srs_chromadb", "label": "provides_context", "title": "provides_context [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "srs_validation", "to": "srs_legaldraft", "label": "validates", "title": "validates [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "srs_validation", "to": "srs_riskanalysis", "label": "validates", "title": "validates [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "srs_chromadb", "to": "srs_naturallanguage", "label": "searched_by", "title": "searched_by [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "srs_performance", "to": "srs_fastapi", "label": "serves", "title": "serves [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "srs_scalability", "to": "srs_langgraph", "label": "enables", "title": "enables [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}];
+const LEGEND = [{"cid": 0, "color": "#4E79A7", "label": "RAG Store &amp; Seeding", "count": 10}, {"cid": 1, "color": "#F28E2B", "label": "Query Processing", "count": 6}, {"cid": 2, "color": "#E15759", "label": "Query Routing &amp; Retrieval", "count": 6}, {"cid": 3, "color": "#76B7B2", "label": "Configuration", "count": 5}, {"cid": 4, "color": "#59A14F", "label": "Agent State", "count": 4}, {"cid": 5, "color": "#EDC948", "label": "Main Entry Point", "count": 3}, {"cid": 6, "color": "#B07AA1", "label": "Analyze Node", "count": 3}, {"cid": 7, "color": "#FF9DA7", "label": "Validate Node", "count": 3}, {"cid": 8, "color": "#9C755F", "label": "Graph Builder", "count": 3}, {"cid": 9, "color": "#BAB0AC", "label": "Draft &amp; Risk Analysis", "count": 3}, {"cid": 10, "color": "#4E79A7", "label": "Draft Node", "count": 2}, {"cid": 11, "color": "#F28E2B", "label": "Route Query Node", "count": 2}, {"cid": 12, "color": "#E15759", "label": "Retrieve Node", "count": 2}, {"cid": 13, "color": "#76B7B2", "label": "API Performance", "count": 2}, {"cid": 14, "color": "#59A14F", "label": "LangGraph Scalability", "count": 2}, {"cid": 15, "color": "#EDC948", "label": "List Models Script", "count": 1}, {"cid": 16, "color": "#B07AA1", "label": "List Models Module", "count": 1}, {"cid": 17, "color": "#FF9DA7", "label": "Legal Validation", "count": 1}];
+
+// HTML-escape helper — prevents XSS when injecting graph data into innerHTML
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// Build vis datasets
+const nodesDS = new vis.DataSet(RAW_NODES.map(n => ({
+  id: n.id, label: n.label, color: n.color, size: n.size,
+  font: n.font, title: n.title,
+  _community: n.community, _community_name: n.community_name,
+  _source_file: n.source_file, _file_type: n.file_type, _degree: n.degree,
+})));
+
+const edgesDS = new vis.DataSet(RAW_EDGES.map((e, i) => ({
+  id: i, from: e.from, to: e.to,
+  label: '',
+  title: e.title,
+  dashes: e.dashes,
+  width: e.width,
+  color: e.color,
+  arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+})));
+
+const container = document.getElementById('graph');
+const network = new vis.Network(container, { nodes: nodesDS, edges: edgesDS }, {
+  physics: {
+    enabled: true,
+    solver: 'forceAtlas2Based',
+    forceAtlas2Based: {
+      gravitationalConstant: -60,
+      centralGravity: 0.005,
+      springLength: 120,
+      springConstant: 0.08,
+      damping: 0.4,
+      avoidOverlap: 0.8,
+    },
+    stabilization: { iterations: 200, fit: true },
+  },
+  interaction: {
+    hover: true,
+    tooltipDelay: 100,
+    hideEdgesOnDrag: true,
+    navigationButtons: false,
+    keyboard: false,
+  },
+  nodes: { shape: 'dot', borderWidth: 1.5 },
+  edges: { smooth: { type: 'continuous', roundness: 0.2 }, selectionWidth: 3 },
+});
+
+network.once('stabilizationIterationsDone', () => {
+  network.setOptions({ physics: { enabled: false } });
+});
+
+function showInfo(nodeId) {
+  const n = nodesDS.get(nodeId);
+  if (!n) return;
+  const neighborIds = network.getConnectedNodes(nodeId);
+  const neighborItems = neighborIds.map(nid => {
+    const nb = nodesDS.get(nid);
+    const color = nb ? nb.color.background : '#555';
+    return `<span class="neighbor-link" style="border-left-color:${esc(color)}" onclick="focusNode(${JSON.stringify(nid)})">${esc(nb ? nb.label : nid)}</span>`;
+  }).join('');
+  document.getElementById('info-content').innerHTML = `
+    <div class="field"><b>${esc(n.label)}</b></div>
+    <div class="field">Type: ${esc(n._file_type || 'unknown')}</div>
+    <div class="field">Community: ${esc(n._community_name)}</div>
+    <div class="field">Source: ${esc(n._source_file || '-')}</div>
+    <div class="field">Degree: ${n._degree}</div>
+    ${neighborIds.length ? `<div class="field" style="margin-top:8px;color:#aaa;font-size:11px">Neighbors (${neighborIds.length})</div><div id="neighbors-list">${neighborItems}</div>` : ''}
+  `;
+}
+
+function focusNode(nodeId) {
+  network.focus(nodeId, { scale: 1.4, animation: true });
+  network.selectNodes([nodeId]);
+  showInfo(nodeId);
+}
+
+// Track hovered node — hover detection is more reliable than click params
+let hoveredNodeId = null;
+network.on('hoverNode', params => {
+  hoveredNodeId = params.node;
+  container.style.cursor = 'pointer';
+});
+network.on('blurNode', () => {
+  hoveredNodeId = null;
+  container.style.cursor = 'default';
+});
+container.addEventListener('click', () => {
+  if (hoveredNodeId !== null) {
+    showInfo(hoveredNodeId);
+    network.selectNodes([hoveredNodeId]);
+  }
+});
+network.on('click', params => {
+  if (params.nodes.length > 0) {
+    showInfo(params.nodes[0]);
+  } else if (hoveredNodeId === null) {
+    document.getElementById('info-content').innerHTML = '<span class="empty">Click a node to inspect it</span>';
+  }
+});
+
+const searchInput = document.getElementById('search');
+const searchResults = document.getElementById('search-results');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  searchResults.innerHTML = '';
+  if (!q) { searchResults.style.display = 'none'; return; }
+  const matches = RAW_NODES.filter(n => n.label.toLowerCase().includes(q)).slice(0, 20);
+  if (!matches.length) { searchResults.style.display = 'none'; return; }
+  searchResults.style.display = 'block';
+  matches.forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'search-item';
+    el.textContent = n.label;
+    el.style.borderLeft = `3px solid ${n.color.background}`;
+    el.style.paddingLeft = '8px';
+    el.onclick = () => {
+      network.focus(n.id, { scale: 1.5, animation: true });
+      network.selectNodes([n.id]);
+      showInfo(n.id);
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+    };
+    searchResults.appendChild(el);
+  });
+});
+document.addEventListener('click', e => {
+  if (!searchResults.contains(e.target) && e.target !== searchInput)
+    searchResults.style.display = 'none';
+});
+
+const hiddenCommunities = new Set();
+
+function toggleAllCommunities(hide) {
+  document.querySelectorAll('.legend-item').forEach(item => {
+    hide ? item.classList.add('dimmed') : item.classList.remove('dimmed');
+  });
+  LEGEND.forEach(c => {
+    if (hide) hiddenCommunities.add(c.cid); else hiddenCommunities.delete(c.cid);
+  });
+  const updates = RAW_NODES.map(n => ({ id: n.id, hidden: hide }));
+  nodesDS.update(updates);
+}
+
+const legendEl = document.getElementById('legend');
+LEGEND.forEach(c => {
+  const item = document.createElement('div');
+  item.className = 'legend-item';
+  item.innerHTML = `<div class="legend-dot" style="background:${c.color}"></div>
+    <span class="legend-label">${c.label}</span>
+    <span class="legend-count">${c.count}</span>`;
+  item.onclick = () => {
+    if (hiddenCommunities.has(c.cid)) {
+      hiddenCommunities.delete(c.cid);
+      item.classList.remove('dimmed');
+    } else {
+      hiddenCommunities.add(c.cid);
+      item.classList.add('dimmed');
+    }
+    const updates = RAW_NODES
+      .filter(n => n.community === c.cid)
+      .map(n => ({ id: n.id, hidden: hiddenCommunities.has(c.cid) }));
+    nodesDS.update(updates);
+  };
+  legendEl.appendChild(item);
+});
+</script>
+<script>
+// Render hyperedges as shaded regions
+const hyperedges = [];
+// afterDrawing passes ctx already transformed to network coordinate space.
+// Draw node positions raw — no manual pan/zoom/DPR math needed.
+network.on('afterDrawing', function(ctx) {
+    hyperedges.forEach(h => {
+        const positions = h.nodes
+            .map(nid => network.getPositions([nid])[nid])
+            .filter(p => p !== undefined);
+        if (positions.length < 2) return;
+        ctx.save();
+        ctx.globalAlpha = 0.12;
+        ctx.fillStyle = '#6366f1';
+        ctx.strokeStyle = '#6366f1';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        // Centroid and expanded hull in network coordinates
+        const cx = positions.reduce((s, p) => s + p.x, 0) / positions.length;
+        const cy = positions.reduce((s, p) => s + p.y, 0) / positions.length;
+        const expanded = positions.map(p => ({
+            x: cx + (p.x - cx) * 1.15,
+            y: cy + (p.y - cy) * 1.15
+        }));
+        ctx.moveTo(expanded[0].x, expanded[0].y);
+        expanded.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 0.4;
+        ctx.stroke();
+        // Label
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = '#4f46e5';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(h.label, cx, cy - 5);
+        ctx.restore();
+    });
+});
+</script>
+</body>
+</html>
