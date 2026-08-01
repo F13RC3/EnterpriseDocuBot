@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import ChatInterface from './components/ChatInterface';
 import DocViewer from './components/DocViewer';
 
-// Import raw markdown files using Vite's ?raw suffix
-import architectureMd from '../../../docs/system_architecture.md?raw';
-import manualMd from '../../../docs/user_manual.md?raw';
-import interviewMd from '../../../docs/interview_questions.md?raw';
-import readmeMd from '../../../README.md?raw';
+// Import raw markdown files using Vite's path aliases and ?raw suffix
+import architectureMd from '@docs/system_architecture.md?raw';
+import manualMd from '@docs/user_manual.md?raw';
+import interviewMd from '@docs/interview_questions.md?raw';
+import readmeMd from '@root/README.md?raw';
 
 function App() {
   const [activeView, setActiveView] = useState('chat'); // 'chat', 'architecture', 'manual', 'interview', 'readme'
