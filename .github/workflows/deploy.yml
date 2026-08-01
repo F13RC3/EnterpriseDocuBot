@@ -40,6 +40,9 @@ jobs:
         working-directory: ./frontend
         run: npm run build -- --base=/${{ github.event.repository.name }}/
         
+      - name: Copy Graphify Outputs
+        run: cp -r graphify-out frontend/dist/graphify-out
+        
       - name: Setup Pages
         uses: actions/configure-pages@v4
         

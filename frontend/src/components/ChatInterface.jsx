@@ -59,8 +59,33 @@ const ChatInterface = () => {
       </form>
 
       {error && (
-        <div className="error-message">
-          <strong>Error:</strong> {error}
+        <div className="error-message" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div><strong>Error:</strong> {error}</div>
+          <div style={{ fontSize: '0.9em', opacity: 0.9, lineHeight: '1.4' }}>
+            <strong>Note:</strong> If you are viewing this on GitHub Pages, the backend API must be running locally on your machine (localhost:8000) for it to work.
+          </div>
+          <a 
+            href="https://github.com/kei0s/EnterpriseDocuBot#%F0%9F%8C%8D-live-demo--github-pages-deployment" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-block',
+              padding: '8px 16px',
+              backgroundColor: 'rgba(255, 255, 255, 0.15)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              borderRadius: '6px',
+              color: 'white',
+              textDecoration: 'none',
+              textAlign: 'center',
+              fontWeight: '500',
+              width: 'fit-content',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.25)'}
+            onMouseOut={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.15)'}
+          >
+            📖 Read Setup Instructions
+          </a>
         </div>
       )}
 
