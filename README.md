@@ -33,37 +33,42 @@ The system uses a stateful graph orchestrated by **LangGraph**:
 - **FastAPI Backend:** A production-ready REST API with automatic Swagger documentation.
 
 ## 🛠️ Tech Stack
+- **Frontend:** `React`, `Vite`, `Vanilla CSS`
 - **Orchestration:** `LangGraph`, `LangChain`
 - **LLM & Embeddings:** `Google Gemini` (`langchain-google-genai`)
 - **Vector Database:** `ChromaDB`
 - **API Framework:** `FastAPI`, `Uvicorn`
-- **Environment Management:** `uv`
+- **Environment Management & Deployment:** `uv`, `Docker Compose`, `GitHub Actions`
 
-## 🚀 Quickstart
+## 🚀 Quickstart (Docker Compose Recommended)
 
-1. Ensure [`uv`](https://docs.astral.sh/uv/) is installed.
-2. Clone and enter the directory:
+1. Clone and enter the directory:
    ```bash
    git clone <repository_url>
    cd EnterpriseDocuBot
    ```
-3. Install dependencies:
-   ```bash
-   uv sync
-   ```
-4. Set up your `.env` file:
+2. Set up your `.env` file in the root directory:
    ```env
    GEMINI_API_KEY=your_actual_key_here
    ```
-5. Seed the vector database:
+3. Run the complete stack using Docker Compose:
    ```bash
-   PYTHONPATH=. uv run python mock_data/seed.py
+   docker compose up -d --build
    ```
-6. Start the server:
-   ```bash
-   PYTHONPATH=. uv run python src/main.py
-   ```
-7. Test the API at `http://localhost:8000/docs`
+4. Access the applications:
+   - **React Frontend (Chat UI):** `http://localhost:5173`
+   - **FastAPI Backend (Swagger UI):** `http://localhost:8000/docs`
+
+> Note: To manually run locally without Docker, ensure `uv` and `npm` are installed. Seed the vector database with `PYTHONPATH=src uv run python mock_data/seed.py`, start the backend with `PYTHONPATH=src uv run python src/main.py`, and start the frontend with `cd frontend && npm run dev`.
+
+## 🌍 Live Demo & GitHub Pages Deployment
+
+The React frontend is automatically deployed to GitHub Pages via GitHub Actions.
+You can access the live user interface at: `https://<your-username>.github.io/EnterpriseDocuBot/`
+
+**IMPORTANT**: Because GitHub Pages only hosts static files, the frontend still needs the FastAPI backend to function. To use the live GitHub Pages UI:
+1. Clone the repository and run the backend locally: `docker compose up -d backend` (or manually run `src/main.py`).
+2. Navigate to the GitHub Pages URL. The live frontend is configured to communicate with your local backend at `http://localhost:8000`.
 
 ## 📊 Codebase Visualization
 Explore the architecture through our generated knowledge graph:
@@ -71,10 +76,11 @@ Explore the architecture through our generated knowledge graph:
 - **Graph Report:** Review [Graph Report](graphify-out/GRAPH_REPORT.md) for a summary of core abstractions and LangGraph connections.
 
 ## 📂 Project Structure
+- `frontend/`: React frontend powered by Vite with a modern Chat UI.
 - `src/`: Source code (FastAPI app, LangGraph agent logic, RAG utilities).
 - `mock_data/`: Seed scripts and sample legal clauses.
 - `docs/`: Detailed SRS, Architecture, and User manuals.
-- `graphify-out/`: Knowledge graph outputs.
+- `docker-compose.yml`: Local deployment configuration.
 
 ## 📚 Documentation
 Detailed specifications are available in the `docs/` folder:

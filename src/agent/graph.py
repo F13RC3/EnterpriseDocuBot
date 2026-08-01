@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, END
-from src.agent.state import AgentState
-from src.agent.nodes import route_query, retrieve, analyze, draft, validate
+from agent.state import AgentState
+from agent.nodes import route_query, retrieve, analyze, draft, validate
 
 def build_graph():
     workflow = StateGraph(AgentState)

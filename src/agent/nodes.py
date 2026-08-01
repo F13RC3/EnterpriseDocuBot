@@ -1,9 +1,9 @@
 import os
 from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
-from src.config import settings
-from src.agent.state import AgentState
-from src.rag.vectorstore import RAGStore
+from config import settings
+from agent.state import AgentState
+from rag.vectorstore import RAGStore
 
 if settings.gemini_api_key:
     os.environ["GOOGLE_API_KEY"] = settings.gemini_api_key

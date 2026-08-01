@@ -6,10 +6,10 @@ EnterpriseDocuBot employs a modular, microservice-ready architecture. It consist
 ## 2. Component Diagram
 
 ```text
-[ Client (cURL/Swagger) ] 
+[ React Frontend (Vite) ] <--- User Interface (localhost:5173)
        | (HTTP POST /process)
        v
-[ FastAPI Server (main.py) ]
+[ FastAPI Server (main.py) ] <--- Backend (localhost:8000)
        | (Initializes State)
        v
 [ LangGraph Workflow Engine ]

@@ -319,6 +319,13 @@ main.py
 └── vectorstore.py (indirect via nodes)
 ```
 
+### 10.3 GitHub Pages Frontend Deployment
+The React frontend is continuously deployed to GitHub Pages via GitHub Actions (`.github/workflows/deploy.yml`). 
+Because GitHub Pages only supports static assets, the architecture leverages a **Local-First Backend** model for the live site:
+- The static UI is hosted globally at `https://<username>.github.io/EnterpriseDocuBot/`.
+- The user must run the FastAPI backend locally (e.g., `docker compose up -d backend`).
+- The live GitHub Pages UI makes client-side API requests to `http://localhost:8000`.
+
 ---
 
 ## 11. Scalability & Extensibility

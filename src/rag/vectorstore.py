@@ -3,7 +3,7 @@ import chromadb
 from typing import List, Dict, Any
 from langchain_core.documents import Document
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from src.config import settings
+from config import settings
 
 class RAGStore:
     def __init__(self):

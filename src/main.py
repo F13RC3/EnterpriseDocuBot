@@ -1,11 +1,20 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from src.agent.graph import build_graph
+from agent.graph import build_graph
 
 app = FastAPI(
     title="EnterpriseDocuBot",
     description="Intelligent Contract Analysis & Generation Engine API",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Initialize graph once at startup
@@ -49,4 +58,4 @@ async def process_query(request: QueryRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("src.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
