@@ -83,5 +83,6 @@ Explore the architecture through our generated knowledge graph:
 - `docker-compose.yml`: Local deployment configuration.
 
 ## 📚 Documentation
-Detailed specifications are available in the `docs/` folder:
-- [Project Charter](docs/project_charter.md) | [SRS](docs/srs.md) | [System Architecture](docs/system_architecture.md) | [User Manual](docs/user_manual.md)
+All detailed specifications and documentation (System Architecture, User Manual, Interview Q&A) are now built directly into the React Frontend as an interactive Markdown viewer. 
+
+To read them, simply run the frontend (or visit the GitHub Pages link) and use the top navigation bar! The raw markdown files are also available in the `docs/` folder.

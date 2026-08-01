@@ -65,7 +65,7 @@ const ChatInterface = () => {
             <strong>Note:</strong> If you are viewing this on GitHub Pages, the backend API must be running locally on your machine (localhost:8000) for it to work.
           </div>
           <a 
-            href="https://github.com/kei0s/EnterpriseDocuBot#%F0%9F%8C%8D-live-demo--github-pages-deployment" 
+            href="https://github.com/f13rc3/EnterpriseDocuBot#%F0%9F%8C%8D-live-demo--github-pages-deployment" 
             target="_blank" 
             rel="noopener noreferrer"
             style={{
