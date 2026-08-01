@@ -20,7 +20,7 @@ EnterpriseDocuBot doesn't rely solely on the AI's memory. Instead, it acts like 
 
 The system uses a stateful graph orchestrated by **LangGraph**:
 
-`User Query` $\rightarrow$ `Router Node` (Draft vs Analyze) $\rightarrow$ `Retrieval Node` (RAG Search) $\rightarrow$ `Worker Node` (Generation) $\rightarrow$ `Validation Node` $\rightarrow$ `Final Response`
+`User Query` → `Router Node` (Draft vs Analyze) → `Retrieval Node` (RAG Search) → `Worker Node` (Generation) → `Validation Node` → `Final Response`
 
 - **Routing:** Dynamically determines if the user wants to create a new clause or analyze an existing one.
 - **RAG:** Uses **Google Gemini Embeddings** to find contextually relevant clauses from **ChromaDB**.
