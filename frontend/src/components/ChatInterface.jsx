@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ChatInterface = () => {
+const ChatInterface = ({ setActiveView }) => {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -64,28 +64,40 @@ const ChatInterface = () => {
           <div style={{ fontSize: '0.9em', opacity: 0.9, lineHeight: '1.4' }}>
             <strong>Note:</strong> If you are viewing this on GitHub Pages, the backend API must be running locally on your machine (localhost:8000) for it to work.
           </div>
-          <a 
-            href="https://github.com/f13rc3/EnterpriseDocuBot#%F0%9F%8C%8D-live-demo--github-pages-deployment" 
-            target="_blank" 
-            rel="noopener noreferrer"
+          <button 
+            type="button"
+            onClick={() => {
+              if (setActiveView) {
+                setActiveView('readme');
+                // Allow time for the DocViewer to render the markdown, then scroll
+                setTimeout(() => {
+                  const headings = Array.from(document.querySelectorAll('.markdown-body h2, .markdown-body h3'));
+                  const targetHeading = headings.find(h => h.textContent.includes('Live Demo'));
+                  if (targetHeading) {
+                    targetHeading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }, 150);
+              }
+            }}
             style={{
               display: 'inline-block',
               padding: '8px 16px',
-              backgroundColor: 'rgba(255, 255, 255, 0.15)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
+              backgroundColor: 'rgba(16, 185, 129, 0.15)',
+              border: '1px solid rgba(16, 185, 129, 0.4)',
               borderRadius: '6px',
-              color: 'white',
-              textDecoration: 'none',
+              color: '#34d399',
+              fontSize: '0.95rem',
               textAlign: 'center',
-              fontWeight: '500',
+              fontWeight: '600',
               width: 'fit-content',
-              transition: 'background-color 0.2s'
+              transition: 'background-color 0.2s',
+              cursor: 'pointer'
             }}
-            onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.25)'}
-            onMouseOut={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.15)'}
+            onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(16, 185, 129, 0.3)'}
+            onMouseOut={(e) => e.target.style.backgroundColor = 'rgba(16, 185, 129, 0.15)'}
           >
             📖 Read Setup Instructions
-          </a>
+          </button>
         </div>
       )}
 

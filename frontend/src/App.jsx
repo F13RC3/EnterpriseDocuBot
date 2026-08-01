@@ -31,7 +31,7 @@ function App() {
       case 'manual': return <DocViewer content={manualMd} />;
       case 'interview': return <DocViewer content={interviewMd} />;
       case 'readme': return <DocViewer content={readmeMd} />;
-      default: return <ChatInterface />;
+      default: return <ChatInterface setActiveView={setActiveView} />;
     }
   };
 
