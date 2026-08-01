@@ -27,7 +27,7 @@
       "source_file": "list_models.py",
       "source_location": "L1",
       "id": "list_models_py",
-      "community": 15,
+      "community": 13,
       "norm_label": "list_models.py"
     },
     {
@@ -36,7 +36,7 @@
       "source_file": "src/config.py",
       "source_location": "L1",
       "id": "src_config_py",
-      "community": 3,
+      "community": 2,
       "norm_label": "config.py"
     },
     {
@@ -45,7 +45,7 @@
       "source_file": "src/config.py",
       "source_location": "L3",
       "id": "src_config_settings",
-      "community": 3,
+      "community": 2,
       "norm_label": "settings"
     },
     {
@@ -54,7 +54,7 @@
       "source_file": "",
       "source_location": "",
       "id": "basesettings",
-      "community": 3,
+      "community": 2,
       "norm_label": "basesettings"
     },
     {
@@ -63,7 +63,7 @@
       "source_file": "src/config.py",
       "source_location": "L7",
       "id": "src_config_config",
-      "community": 3,
+      "community": 2,
       "norm_label": "config"
     },
     {
@@ -79,7 +79,7 @@
       "label": "QueryRequest",
       "file_type": "code",
       "source_file": "src/main.py",
-      "source_location": "L14",
+      "source_location": "L23",
       "id": "src_main_queryrequest",
       "community": 1,
       "norm_label": "queryrequest"
@@ -97,7 +97,7 @@
       "label": "QueryResponse",
       "file_type": "code",
       "source_file": "src/main.py",
-      "source_location": "L17",
+      "source_location": "L26",
       "id": "src_main_queryresponse",
       "community": 1,
       "norm_label": "queryresponse"
@@ -106,7 +106,7 @@
       "label": "process_query()",
       "file_type": "code",
       "source_file": "src/main.py",
-      "source_location": "L25",
+      "source_location": "L34",
       "id": "src_main_process_query",
       "community": 1,
       "norm_label": "process_query()"
@@ -117,7 +117,7 @@
       "source_file": "src/agent/state.py",
       "source_location": "L1",
       "id": "src_agent_state_py",
-      "community": 4,
+      "community": 3,
       "norm_label": "state.py"
     },
     {
@@ -126,7 +126,7 @@
       "source_file": "src/agent/state.py",
       "source_location": "L4",
       "id": "agent_state_agentstate",
-      "community": 4,
+      "community": 3,
       "norm_label": "agentstate"
     },
     {
@@ -135,7 +135,7 @@
       "source_file": "",
       "source_location": "",
       "id": "typeddict",
-      "community": 4,
+      "community": 3,
       "norm_label": "typeddict"
     },
     {
@@ -144,7 +144,7 @@
       "source_file": "src/agent/nodes.py",
       "source_location": "L1",
       "id": "src_agent_nodes_py",
-      "community": 7,
+      "community": 4,
       "norm_label": "nodes.py"
     },
     {
@@ -153,7 +153,7 @@
       "source_file": "src/agent/nodes.py",
       "source_location": "L14",
       "id": "agent_nodes_route_query",
-      "community": 11,
+      "community": 6,
       "norm_label": "route_query()"
     },
     {
@@ -162,7 +162,7 @@
       "source_file": "src/agent/nodes.py",
       "source_location": "L33",
       "id": "agent_nodes_retrieve",
-      "community": 12,
+      "community": 9,
       "norm_label": "retrieve()"
     },
     {
@@ -171,7 +171,7 @@
       "source_file": "src/agent/nodes.py",
       "source_location": "L39",
       "id": "agent_nodes_analyze",
-      "community": 6,
+      "community": 8,
       "norm_label": "analyze()"
     },
     {
@@ -180,7 +180,7 @@
       "source_file": "src/agent/nodes.py",
       "source_location": "L55",
       "id": "agent_nodes_draft",
-      "community": 10,
+      "community": 7,
       "norm_label": "draft()"
     },
     {
@@ -189,7 +189,7 @@
       "source_file": "src/agent/nodes.py",
       "source_location": "L70",
       "id": "agent_nodes_validate",
-      "community": 7,
+      "community": 4,
       "norm_label": "validate()"
     },
     {
@@ -198,7 +198,7 @@
       "source_file": "src/agent/nodes.py",
       "source_location": "L15",
       "id": "agent_nodes_rationale_15",
-      "community": 11,
+      "community": 6,
       "norm_label": "decides whether the query is for drafting a new contract or analyzing an existin"
     },
     {
@@ -207,7 +207,7 @@
       "source_file": "src/agent/nodes.py",
       "source_location": "L34",
       "id": "agent_nodes_rationale_34",
-      "community": 12,
+      "community": 9,
       "norm_label": "fetches relevant context from the vector store."
     },
     {
@@ -216,7 +216,7 @@
       "source_file": "src/agent/nodes.py",
       "source_location": "L40",
       "id": "agent_nodes_rationale_40",
-      "community": 6,
+      "community": 8,
       "norm_label": "analyzes the retrieved context based on the query."
     },
     {
@@ -225,7 +225,7 @@
       "source_file": "src/agent/nodes.py",
       "source_location": "L56",
       "id": "agent_nodes_rationale_56",
-      "community": 10,
+      "community": 7,
       "norm_label": "generates new contract content."
     },
     {
@@ -234,7 +234,7 @@
       "source_file": "src/agent/nodes.py",
       "source_location": "L71",
       "id": "agent_nodes_rationale_71",
-      "community": 7,
+      "community": 4,
       "norm_label": "validates the drafted or analyzed content against standard legal compliance."
     },
     {
@@ -243,7 +243,7 @@
       "source_file": "src/agent/graph.py",
       "source_location": "L1",
       "id": "src_agent_graph_py",
-      "community": 8,
+      "community": 10,
       "norm_label": "graph.py"
     },
     {
@@ -252,7 +252,7 @@
       "source_file": "src/agent/graph.py",
       "source_location": "L5",
       "id": "agent_graph_build_graph",
-      "community": 8,
+      "community": 10,
       "norm_label": "build_graph()"
     },
     {
@@ -328,211 +328,58 @@
       "norm_label": "seed_database()"
     },
     {
-      "label": "main.py",
+      "label": "vite.config.js",
       "file_type": "code",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/main.py",
+      "source_file": "frontend/vite.config.js",
       "source_location": "L1",
-      "id": "home_kei0s_documents_enterprisedocubot_main_py",
-      "community": 5,
-      "norm_label": "main.py"
-    },
-    {
-      "label": "list_models.py",
-      "file_type": "code",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/list_models.py",
-      "source_location": "L1",
-      "id": "home_kei0s_documents_enterprisedocubot_list_models_py",
-      "community": 16,
-      "norm_label": "list_models.py"
-    },
-    {
-      "label": "config.py",
-      "file_type": "code",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/config.py",
-      "source_location": "L1",
-      "id": "home_kei0s_documents_enterprisedocubot_src_config_py",
-      "community": 3,
-      "norm_label": "config.py"
-    },
-    {
-      "label": "main.py",
-      "file_type": "code",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/main.py",
-      "source_location": "L1",
-      "id": "home_kei0s_documents_enterprisedocubot_src_main_py",
-      "community": 1,
-      "norm_label": "main.py"
-    },
-    {
-      "label": "state.py",
-      "file_type": "code",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/state.py",
-      "source_location": "L1",
-      "id": "home_kei0s_documents_enterprisedocubot_src_agent_state_py",
-      "community": 4,
-      "norm_label": "state.py"
-    },
-    {
-      "label": "nodes.py",
-      "file_type": "code",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py",
-      "source_location": "L1",
-      "id": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py",
-      "community": 6,
-      "norm_label": "nodes.py"
-    },
-    {
-      "label": "graph.py",
-      "file_type": "code",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/graph.py",
-      "source_location": "L1",
-      "id": "home_kei0s_documents_enterprisedocubot_src_agent_graph_py",
-      "community": 8,
-      "norm_label": "graph.py"
-    },
-    {
-      "label": "vectorstore.py",
-      "file_type": "code",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/rag/vectorstore.py",
-      "source_location": "L1",
-      "id": "home_kei0s_documents_enterprisedocubot_src_rag_vectorstore_py",
-      "community": 0,
-      "norm_label": "vectorstore.py"
-    },
-    {
-      "label": "seed.py",
-      "file_type": "code",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/mock_data/seed.py",
-      "source_location": "L1",
-      "id": "home_kei0s_documents_enterprisedocubot_mock_data_seed_py",
-      "community": 0,
-      "norm_label": "seed.py"
-    },
-    {
-      "label": "Query Routing",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "FR1",
-      "id": "srs_queryrouting",
-      "community": 2,
-      "norm_label": "query routing"
-    },
-    {
-      "label": "Contract Drafting",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "FR3",
-      "id": "srs_contracdrafting",
-      "community": 2,
-      "norm_label": "contract drafting"
-    },
-    {
-      "label": "Contract Analysis",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "FR4",
-      "id": "srs_contractanalysis",
-      "community": 2,
-      "norm_label": "contract analysis"
-    },
-    {
-      "label": "Validation Node",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "FR5",
-      "id": "srs_validation",
-      "community": 9,
-      "norm_label": "validation node"
-    },
-    {
-      "label": "POST /process Endpoint",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "FR6",
-      "id": "srs_apiendpoint",
-      "community": 2,
-      "norm_label": "post /process endpoint"
-    },
-    {
-      "label": "ChromaDB Collection",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "FR2",
-      "id": "srs_chromadb",
-      "community": 2,
-      "norm_label": "chromadb collection"
-    },
-    {
-      "label": "Natural Language Query",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "FR1",
-      "id": "srs_naturallanguage",
-      "community": 2,
-      "norm_label": "natural language query"
-    },
-    {
-      "label": "Legal Draft",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "FR3",
-      "id": "srs_legaldraft",
-      "community": 9,
-      "norm_label": "legal draft"
-    },
-    {
-      "label": "Risk Analysis",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "FR4",
-      "id": "srs_riskanalysis",
-      "community": 9,
-      "norm_label": "risk analysis"
-    },
-    {
-      "label": "Legal Soundness Check",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "FR5",
-      "id": "srs_legalsoundness",
-      "community": 17,
-      "norm_label": "legal soundness check"
-    },
-    {
-      "label": "Performance (15s response)",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "NFR1",
-      "id": "srs_performance",
-      "community": 13,
-      "norm_label": "performance (15s response)"
-    },
-    {
-      "label": "Horizontal Scalability",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "NFR2",
-      "id": "srs_scalability",
+      "id": "frontend_vite_config_js",
       "community": 14,
-      "norm_label": "horizontal scalability"
+      "norm_label": "vite.config.js"
     },
     {
-      "label": "FastAPI",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "NFR3",
-      "id": "srs_fastapi",
-      "community": 13,
-      "norm_label": "fastapi"
+      "label": "App.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/App.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_app_jsx",
+      "community": 11,
+      "norm_label": "app.jsx"
     },
     {
-      "label": "LangGraph",
-      "file_type": "document",
-      "source_file": "docs/srs.md",
-      "source_location": "NFR2",
-      "id": "srs_langgraph",
-      "community": 14,
-      "norm_label": "langgraph"
+      "label": "App()",
+      "file_type": "code",
+      "source_file": "frontend/src/App.jsx",
+      "source_location": "L4",
+      "id": "src_app_app",
+      "community": 11,
+      "norm_label": "app()"
+    },
+    {
+      "label": "main.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/main.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_main_jsx",
+      "community": 15,
+      "norm_label": "main.jsx"
+    },
+    {
+      "label": "ChatInterface.jsx",
+      "file_type": "code",
+      "source_file": "frontend/src/components/ChatInterface.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_components_chatinterface_jsx",
+      "community": 12,
+      "norm_label": "chatinterface.jsx"
+    },
+    {
+      "label": "ChatInterface()",
+      "file_type": "code",
+      "source_file": "frontend/src/components/ChatInterface.jsx",
+      "source_location": "L3",
+      "id": "components_chatinterface_chatinterface",
+      "community": 12,
+      "norm_label": "chatinterface()"
     }
   ],
   "links": [
@@ -546,18 +393,6 @@
       "_tgt": "enterprisedocubot_main_main",
       "source": "main_py",
       "target": "enterprisedocubot_main_main",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/main.py",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_main_py",
-      "_tgt": "enterprisedocubot_main_main",
-      "source": "enterprisedocubot_main_main",
-      "target": "home_kei0s_documents_enterprisedocubot_main_py",
       "confidence_score": 1.0
     },
     {
@@ -587,7 +422,7 @@
     {
       "relation": "inherits",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/config.py",
+      "source_file": "src/config.py",
       "source_location": "L3",
       "weight": 1.0,
       "_src": "src_config_settings",
@@ -599,32 +434,8 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/config.py",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_config_py",
-      "_tgt": "src_config_settings",
-      "source": "src_config_settings",
-      "target": "home_kei0s_documents_enterprisedocubot_src_config_py",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/config.py",
-      "source_location": "L7",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_config_py",
-      "_tgt": "src_config_config",
-      "source": "src_config_config",
-      "target": "home_kei0s_documents_enterprisedocubot_src_config_py",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "src/main.py",
-      "source_location": "L14",
+      "source_location": "L23",
       "weight": 1.0,
       "_src": "src_main_py",
       "_tgt": "src_main_queryrequest",
@@ -636,7 +447,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/main.py",
-      "source_location": "L17",
+      "source_location": "L26",
       "weight": 1.0,
       "_src": "src_main_py",
       "_tgt": "src_main_queryresponse",
@@ -648,7 +459,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/main.py",
-      "source_location": "L25",
+      "source_location": "L34",
       "weight": 1.0,
       "_src": "src_main_py",
       "_tgt": "src_main_process_query",
@@ -659,8 +470,8 @@
     {
       "relation": "inherits",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/main.py",
-      "source_location": "L14",
+      "source_file": "src/main.py",
+      "source_location": "L23",
       "weight": 1.0,
       "_src": "src_main_queryrequest",
       "_tgt": "basemodel",
@@ -669,22 +480,10 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/main.py",
-      "source_location": "L14",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_main_py",
-      "_tgt": "src_main_queryrequest",
-      "source": "src_main_queryrequest",
-      "target": "home_kei0s_documents_enterprisedocubot_src_main_py",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "inherits",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/main.py",
-      "source_location": "L17",
+      "source_file": "src/main.py",
+      "source_location": "L26",
       "weight": 1.0,
       "_src": "src_main_queryresponse",
       "_tgt": "basemodel",
@@ -695,37 +494,13 @@
     {
       "relation": "calls",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/main.py",
-      "source_location": "L40",
+      "source_file": "src/main.py",
+      "source_location": "L49",
       "weight": 1.0,
       "_src": "src_main_process_query",
       "_tgt": "src_main_queryresponse",
       "source": "src_main_queryresponse",
       "target": "src_main_process_query",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/main.py",
-      "source_location": "L17",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_main_py",
-      "_tgt": "src_main_queryresponse",
-      "source": "src_main_queryresponse",
-      "target": "home_kei0s_documents_enterprisedocubot_src_main_py",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/main.py",
-      "source_location": "L25",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_main_py",
-      "_tgt": "src_main_process_query",
-      "source": "src_main_process_query",
-      "target": "home_kei0s_documents_enterprisedocubot_src_main_py",
       "confidence_score": 1.0
     },
     {
@@ -743,7 +518,7 @@
     {
       "relation": "inherits",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/state.py",
+      "source_file": "src/agent/state.py",
       "source_location": "L4",
       "weight": 1.0,
       "_src": "agent_state_agentstate",
@@ -815,18 +590,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/state.py",
-      "source_location": "L4",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_agent_state_py",
-      "_tgt": "agent_state_agentstate",
-      "source": "agent_state_agentstate",
-      "target": "home_kei0s_documents_enterprisedocubot_src_agent_state_py",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "src/agent/nodes.py",
       "source_location": "L14",
       "weight": 1.0,
@@ -887,7 +650,7 @@
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py",
+      "source_file": "src/agent/nodes.py",
       "source_location": "L15",
       "weight": 1.0,
       "_src": "agent_nodes_rationale_15",
@@ -897,21 +660,9 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py",
-      "source_location": "L14",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py",
-      "_tgt": "agent_nodes_route_query",
-      "source": "agent_nodes_route_query",
-      "target": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py",
+      "source_file": "src/agent/nodes.py",
       "source_location": "L34",
       "weight": 1.0,
       "_src": "agent_nodes_rationale_34",
@@ -921,21 +672,9 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py",
-      "source_location": "L33",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py",
-      "_tgt": "agent_nodes_retrieve",
-      "source": "agent_nodes_retrieve",
-      "target": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py",
+      "source_file": "src/agent/nodes.py",
       "source_location": "L40",
       "weight": 1.0,
       "_src": "agent_nodes_rationale_40",
@@ -945,21 +684,9 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py",
-      "source_location": "L39",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py",
-      "_tgt": "agent_nodes_analyze",
-      "source": "agent_nodes_analyze",
-      "target": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py",
+      "source_file": "src/agent/nodes.py",
       "source_location": "L56",
       "weight": 1.0,
       "_src": "agent_nodes_rationale_56",
@@ -969,39 +696,15 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py",
-      "source_location": "L55",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py",
-      "_tgt": "agent_nodes_draft",
-      "source": "agent_nodes_draft",
-      "target": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py",
+      "source_file": "src/agent/nodes.py",
       "source_location": "L71",
       "weight": 1.0,
       "_src": "agent_nodes_rationale_71",
       "_tgt": "agent_nodes_validate",
       "source": "agent_nodes_validate",
       "target": "agent_nodes_rationale_71",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/nodes.py",
-      "source_location": "L70",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py",
-      "_tgt": "agent_nodes_validate",
-      "source": "agent_nodes_validate",
-      "target": "home_kei0s_documents_enterprisedocubot_src_agent_nodes_py",
       "confidence_score": 1.0
     },
     {
@@ -1079,18 +782,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/agent/graph.py",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_agent_graph_py",
-      "_tgt": "agent_graph_build_graph",
-      "source": "agent_graph_build_graph",
-      "target": "home_kei0s_documents_enterprisedocubot_src_agent_graph_py",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "src/rag/vectorstore.py",
       "source_location": "L8",
       "weight": 1.0,
@@ -1103,7 +794,7 @@
     {
       "relation": "method",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/rag/vectorstore.py",
+      "source_file": "src/rag/vectorstore.py",
       "source_location": "L9",
       "weight": 1.0,
       "_src": "rag_vectorstore_ragstore",
@@ -1115,7 +806,7 @@
     {
       "relation": "method",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/rag/vectorstore.py",
+      "source_file": "src/rag/vectorstore.py",
       "source_location": "L18",
       "weight": 1.0,
       "_src": "rag_vectorstore_ragstore",
@@ -1127,7 +818,7 @@
     {
       "relation": "method",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/rag/vectorstore.py",
+      "source_file": "src/rag/vectorstore.py",
       "source_location": "L37",
       "weight": 1.0,
       "_src": "rag_vectorstore_ragstore",
@@ -1149,21 +840,9 @@
       "target": "mock_data_seed_seed_database"
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/rag/vectorstore.py",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_src_rag_vectorstore_py",
-      "_tgt": "rag_vectorstore_ragstore",
-      "source": "rag_vectorstore_ragstore",
-      "target": "home_kei0s_documents_enterprisedocubot_src_rag_vectorstore_py",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/src/rag/vectorstore.py",
+      "source_file": "src/rag/vectorstore.py",
       "source_location": "L19",
       "weight": 1.0,
       "_src": "rag_vectorstore_rationale_19",
@@ -1199,123 +878,26 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "/home/kei0s/Documents/EnterpriseDocuBot/mock_data/seed.py",
-      "source_location": "L3",
+      "source_file": "frontend/src/App.jsx",
+      "source_location": "L4",
       "weight": 1.0,
-      "_src": "home_kei0s_documents_enterprisedocubot_mock_data_seed_py",
-      "_tgt": "mock_data_seed_seed_database",
-      "source": "mock_data_seed_seed_database",
-      "target": "home_kei0s_documents_enterprisedocubot_mock_data_seed_py",
+      "_src": "frontend_src_app_jsx",
+      "_tgt": "src_app_app",
+      "source": "frontend_src_app_jsx",
+      "target": "src_app_app",
       "confidence_score": 1.0
     },
     {
-      "relation": "triggers",
+      "relation": "contains",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/srs.md",
-      "source_location": "FR1",
-      "_src": "srs_queryrouting",
-      "_tgt": "srs_contracdrafting",
-      "source": "srs_queryrouting",
-      "target": "srs_contracdrafting"
-    },
-    {
-      "relation": "triggers",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/srs.md",
-      "source_location": "FR1",
-      "_src": "srs_queryrouting",
-      "_tgt": "srs_contractanalysis",
-      "source": "srs_queryrouting",
-      "target": "srs_contractanalysis"
-    },
-    {
-      "relation": "accepts",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/srs.md",
-      "source_location": "FR6",
-      "_src": "srs_apiendpoint",
-      "_tgt": "srs_queryrouting",
-      "source": "srs_queryrouting",
-      "target": "srs_apiendpoint"
-    },
-    {
-      "relation": "provides_context",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/srs.md",
-      "source_location": "FR3",
-      "_src": "srs_chromadb",
-      "_tgt": "srs_contracdrafting",
-      "source": "srs_contracdrafting",
-      "target": "srs_chromadb"
-    },
-    {
-      "relation": "provides_context",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/srs.md",
-      "source_location": "FR4",
-      "_src": "srs_chromadb",
-      "_tgt": "srs_contractanalysis",
-      "source": "srs_contractanalysis",
-      "target": "srs_chromadb"
-    },
-    {
-      "relation": "validates",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/srs.md",
-      "source_location": "FR5",
-      "_src": "srs_validation",
-      "_tgt": "srs_legaldraft",
-      "source": "srs_validation",
-      "target": "srs_legaldraft"
-    },
-    {
-      "relation": "validates",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/srs.md",
-      "source_location": "FR5",
-      "_src": "srs_validation",
-      "_tgt": "srs_riskanalysis",
-      "source": "srs_validation",
-      "target": "srs_riskanalysis"
-    },
-    {
-      "relation": "searched_by",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/srs.md",
-      "source_location": "FR2",
-      "_src": "srs_chromadb",
-      "_tgt": "srs_naturallanguage",
-      "source": "srs_chromadb",
-      "target": "srs_naturallanguage"
-    },
-    {
-      "relation": "serves",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "docs/srs.md",
-      "_src": "srs_fastapi",
-      "_tgt": "srs_performance",
-      "source": "srs_performance",
-      "target": "srs_fastapi"
-    },
-    {
-      "relation": "enables",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/srs.md",
-      "source_location": "NFR2",
-      "_src": "srs_langgraph",
-      "_tgt": "srs_scalability",
-      "source": "srs_scalability",
-      "target": "srs_langgraph"
+      "source_file": "frontend/src/components/ChatInterface.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "frontend_src_components_chatinterface_jsx",
+      "_tgt": "components_chatinterface_chatinterface",
+      "source": "frontend_src_components_chatinterface_jsx",
+      "target": "components_chatinterface_chatinterface",
+      "confidence_score": 1.0
     }
   ],
   "hyperedges": []
