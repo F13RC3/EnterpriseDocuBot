@@ -412,3 +412,92 @@ button:disabled { background-color: rgba(16, 185, 129, 0.3); color: rgba(236, 25
   margin: 1.5rem 0;
   font-style: italic;
 }
+
+/* Mobile Compatibility */
+@media (max-width: 768px) {
+  .os-desktop {
+    padding: 0;
+  }
+  
+  .os-window {
+    height: 100vh;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .window-titlebar {
+    padding: 0 1rem;
+  }
+  
+  .window-controls, .window-spacer {
+    width: 60px;
+  }
+
+  .window-body {
+    flex-direction: column;
+  }
+
+  .window-sidebar {
+    width: 100%;
+    flex-direction: row;
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .window-sidebar::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .sidebar-section {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .sidebar-title {
+    display: none;
+  }
+
+  .sidebar-item {
+    white-space: nowrap;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .window-content {
+    padding: 1.25rem 1rem;
+  }
+
+  .content-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .content-header p {
+    font-size: 0.95rem;
+  }
+
+  .glass-panel {
+    padding: 1.25rem;
+  }
+  
+  button {
+    width: 100%;
+  }
+  
+  .markdown-body h1 {
+    font-size: 1.8rem;
+    margin-top: 1rem;
+  }
+  
+  .markdown-body h2 {
+    font-size: 1.4rem;
+  }
+  
+  .result-content {
+    padding: 1rem;
+  }
+}
